@@ -12,6 +12,8 @@ function BinarioADecimal(num) {
     sumatoria =  sumatoria + (elevado * sumar);
   }
   return sumatoria
+  // otra forma de hacerlo
+  // return num.split("").reduce((a,v,i,arr) => a += 2 ** (arr.length - 1 - i) * v ,0 );
 }
 
 //	10  10/2	5		  10%2 	0
