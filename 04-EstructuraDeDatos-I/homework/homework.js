@@ -13,11 +13,17 @@ Secuencia:  0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
 
 Como ejercicio adicional y completamente opcional, al terminar de resolver este problema pueden intentar definir funciones que logren los mismos resultados pero de manera iterativa.
 */
-
+// n * n-1
 function nFactorial(n) {
+  console.log('valor de n:', n);
+  if(n <= 0) return 1;
+  return n * nFactorial(n - 1);
 }
 
 function nFibonacci(n) {
+  //console.log('valor de n:', n);
+  if(n <= 1) return n;
+  return nFibonacci(n - 1) + nFibonacci(n - 2);
 }
 
 /*
@@ -30,8 +36,20 @@ Pueden utilizar class o función constructora.
 */
 
 function Queue() {
-
+      this.data = [];
 }
+// Definimos el prototype
+Queue.prototype.enqueue = function(dato) {
+    return this.data.push(dato);
+}
+Queue.prototype.dequeue = function() {
+  return this.data.shift();
+}
+Queue.prototype.size = function() {
+  return this.data.length;
+}
+
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
