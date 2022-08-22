@@ -8,12 +8,70 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   Ejemplo: 
   search(3) busca un nodo cuyo valor sea 3;
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
-  En caso de que la búsqueda no arroje resultados, search debe retornar null.
+  --------------------------
+  Comentarios mios:
+    1ero funcion -> 
+      ->2do  recorre todo nodo (no me importa si es el valor es par, string, etc)
+        ->3ro cuando es par retorna el true
+          ->En caso de que la búsqueda no arroje resultados, search debe retornar null.
+  --------------------------
 */
 
-function LinkedList() {}
+function LinkedList() {
+	this.head = null;
+  this.size = 0;
+}
+function Node(value) {
+	this.value = value;
+	this.next = null;
+}
 
-function Node(value) {}
+LinkedList.prototype.add = function(value) {
+	if(!this.head){
+		this.head = new Node(value)
+    this.size++;
+	} else{
+		let current = this.head;
+		// recorrer y buscar el ultimo valor 
+    while(current.next){
+			current = current.next;
+		}
+		current.next = new Node(value);
+    this.size++;
+	}
+}
+
+LinkedList.prototype.remove = function() {
+	let current = this.head;
+  if(current === null ){
+		return null;
+	} else if(current.value !== null && current.next == null ){
+    let currentNew = current.value; 
+    this.head = null; // lo estoy pisando y por eso lo borro
+    return currentNew;
+  }
+  while(current.next.next){
+			current = current.next;
+	}
+  let currentNew = current.next.value; 
+  current.next = null
+  return currentNew
+}
+
+LinkedList.prototype.search = function(parametro){
+  let current = this.head;
+  while(current){
+    if(current.value === parametro){
+      return current.value;
+    } else if(typeof parametro === 'function'){
+      if( parametro(current.value)){
+        return current.value;
+      }
+    }
+    current = current.next;
+  }
+  return null;
+}
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +88,43 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  this.data = [];
+  this.numBuckets = 35;
+}
+
+HashTable.prototype.hash = function(key){
+  //let key = 'foo'
+  let sum = 0;
+  let array = key.split('');
+  function myFunction(item) {
+    //console.log('mostras item',item);
+    sum += item.charCodeAt();
+    return sum;
+  }
+  array.forEach(myFunction);
+  return parseInt(sum % this.numBuckets);  
+}
+
+HashTable.prototype.set = function(key, value){
+  if(typeof(key) != 'string') throw new TypeError('Keys must be strings');
+  let posicion = this.hash(key);
+  if(this.data[posicion] === undefined){
+    this.data[posicion] = {};
+  }
+  this.data[posicion][key] = value;
+}
+
+HashTable.prototype.get = function(key){
+  let posicion = this.hash(key);
+  return this.data[posicion][key];
+}
+
+HashTable.prototype.hasKey = function(key){
+  let posicion = this.hash(key);
+  return this.data[posicion].hasOwnProperty(key); 
+}
+
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
